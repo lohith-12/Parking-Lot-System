@@ -1,5 +1,6 @@
 public class SecurityPersonal{
+
     public void redirectMySecurityStaff() {
-        System.out.println("REDIRECTING MY SECURITY STAFF");
+        System.out.println("SecurityPersonal Alert : REDIRECTING MY SECURITY STAFF");
     }
 }
