@@ -2,13 +2,18 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 public class ParkingSlotAllocationSystemTest {
     ParkingSlotAllocationSystem parkingSlotAllocationSystem;
-
+    Owner owner;
+    SecurityPersonal securityPersonal;
     @Before
     public void setUp() throws Exception {
-        parkingSlotAllocationSystem = new ParkingSlotAllocationSystem(null,null);
+        owner = new Owner();
+        securityPersonal = new SecurityPersonal();
+        parkingSlotAllocationSystem = new ParkingSlotAllocationSystem(2);
     }
 
     @Test

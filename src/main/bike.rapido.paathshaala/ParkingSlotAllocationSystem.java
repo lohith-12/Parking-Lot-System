@@ -1,23 +1,32 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class ParkingSlotAllocationSystem {
     private final Integer TOTAL_SPACE = 2;
-    private Integer availableSpace = 2;
+    private Integer availableSpace;
+    private NotificationManager notificationManager;
+    ArrayList<ParkingLotObserver> parkingLotObserverListForEventTypeFull = new ArrayList<ParkingLotObserver>(Arrays.asList(new Owner(), new SecurityPersonal()));
+    ArrayList<ParkingLotObserver> parkingLotObserverListForEventTypeNotFull = new ArrayList<ParkingLotObserver>(Arrays.asList(new Owner()));
 
-    Owner owner;
-    SecurityPersonal securityPersonal;
 
-    public ParkingSlotAllocationSystem(Owner owner,SecurityPersonal securityPersonal) {
-        this.owner = owner;
-        this.securityPersonal = securityPersonal;
+    public ParkingSlotAllocationSystem(Integer availableSpace) {
+        this.availableSpace = availableSpace;
+        this.notificationManager = new NotificationManager("Full", "NotFull");
+        subscribeAllParkingLotObserver();
     }
-
+    public void subscribeAllParkingLotObserver(){
+        notificationManager.subscribe("Full", parkingLotObserverListForEventTypeFull);
+        notificationManager.subscribe("NotFull", parkingLotObserverListForEventTypeNotFull);
+    }
     public String allocateSpace(){
         String message;
-        if(availableSpace>0){
+        if(availableSpace >0){
             availableSpace -= 1;
             message = Messages.SLOT_IS_ALLOCATED_SUCCESSFULLY;
         }
         else {
-            notifyThatAllSlotsFilled();
+            notificationManager.notify("Full");
             message = Messages.ALL_SLOTS_ARE_OCCUPIED;
         }
         return message;
@@ -30,17 +39,15 @@ public class ParkingSlotAllocationSystem {
         }
         else{
             availableSpace++;
+            if(availableSpace == 1)
+            {
+                notificationManager.notify("NotFull");
+            }
             message = Messages.SLOT_REMOVED_SUCCESSFULLY;
         }
 
         return message;
     }
 
-    public void notifyThatAllSlotsFilled(){
-        if(owner!=null && securityPersonal !=null) {
-            owner.showFullSignBoard();
-            securityPersonal.redirectMySecurityStaff();
-        }
-    }
 
 }

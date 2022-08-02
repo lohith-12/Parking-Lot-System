@@ -1,10 +1,14 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class ParkingLot {
     public static void main(String[] args){
+        Integer capacity = 2;
         Owner owner = new Owner();
         SecurityPersonal securityPersonal = new SecurityPersonal();
-        ParkingSlotAllocationSystem parkingSlotAllocationSystem = new ParkingSlotAllocationSystem(owner,securityPersonal);
+        ParkingSlotAllocationSystem parkingSlotAllocationSystem = new ParkingSlotAllocationSystem(capacity);
+
         int choice;
         do {
             System.out.println("______________________________________________");
@@ -25,7 +29,6 @@ public class ParkingLot {
                     System.out.println();
                     break;
                 case 2:
-
                     successMessage =  parkingSlotAllocationSystem.deallocateSpace();
                     System.out.println(successMessage);
                     System.out.println();
