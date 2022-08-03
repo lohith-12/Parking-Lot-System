@@ -6,12 +6,12 @@ import static org.junit.Assert.assertTrue;
 public class AttendantTest {
     Attendant attendant;
     Integer capacity;
-    ParkingSlotAllocationSystem [] Lots;
+    Integer slots;
     @Before
     public void setUp() throws Exception {
         capacity = 2;
-        Lots= new ParkingSlotAllocationSystem[capacity];
-        attendant = new Attendant(capacity,Lots);
+        slots=1;
+        attendant = new Attendant(capacity,slots);
 
     }
 
@@ -21,4 +21,15 @@ public class AttendantTest {
         assertTrue(actualValue);
     }
 
+    @Test
+    public void unpark() {
+        boolean val = attendant.park();
+
+        boolean actualValue = attendant.unpark();
+
+        assertTrue(actualValue);
+
+
+
+    }
 }

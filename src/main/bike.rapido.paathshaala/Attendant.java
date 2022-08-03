@@ -2,11 +2,14 @@ public class Attendant {
 
     Integer capacity ;
 
+    Integer slots;
+
     ParkingSlotAllocationSystem [] Lots;
 
-    public Attendant(Integer capacity, ParkingSlotAllocationSystem[] lots) {
+    public Attendant(Integer capacity, int slots) {
         this.capacity = capacity;
-        Lots = lots;
+        Lots = new ParkingSlotAllocationSystem[capacity];
+        this.slots=slots;
         init();
     }
 
@@ -44,7 +47,7 @@ public class Attendant {
     public void init()
     {
         for(int i=0;i<this.capacity;i++){
-            this.Lots[i]=new ParkingSlotAllocationSystem(capacity);
+            this.Lots[i]=new ParkingSlotAllocationSystem(slots);
         }
     }
 

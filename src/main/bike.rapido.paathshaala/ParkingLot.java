@@ -4,9 +4,11 @@ public class ParkingLot {
     public static void main(String[] args){
         Integer capacity = 2;
 
+        Integer  slots=2;
+
         ParkingSlotAllocationSystem [] Lots= new ParkingSlotAllocationSystem[2];
 
-        Attendant attendant = new Attendant(capacity,Lots);
+        Attendant attendant = new Attendant(capacity,slots);
 
         int choice;
         do {
