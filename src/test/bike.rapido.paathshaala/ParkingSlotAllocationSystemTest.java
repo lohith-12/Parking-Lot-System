@@ -1,9 +1,10 @@
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 public class ParkingSlotAllocationSystemTest {
     ParkingSlotAllocationSystem parkingSlotAllocationSystem;
@@ -38,11 +39,27 @@ public class ParkingSlotAllocationSystemTest {
     public void shouldNotAllocateSpaceForCarAfterParkingSpaceIsFull(){
         parkingSlotAllocationSystem.allocateSpace();
         parkingSlotAllocationSystem.allocateSpace();
-
         String actualMessage = parkingSlotAllocationSystem.allocateSpace();
         String expectedMessage = Messages.ALL_SLOTS_ARE_OCCUPIED;
-
         assertThat(actualMessage, is(expectedMessage));
+
+    }
+    @Test
+    public void shouldVerifyThatLotObserversIsNotifiedThatLotIsFull(){
+        parkingSlotAllocationSystem.allocateSpace();
+        parkingSlotAllocationSystem.allocateSpace();
+        ParkingSlotAllocationSystem parkingSlotAllocationSystemspy = Mockito.spy(parkingSlotAllocationSystem);
+        parkingSlotAllocationSystemspy.allocateSpace();
+        verify(parkingSlotAllocationSystemspy,times(1)).notifyLotObserversThatSlotIsFull();
+    }
+    @Test
+    public void shouldVerifyThatLotObserversIsNotifiedThatLotHasSlotsAgain(){
+        parkingSlotAllocationSystem.allocateSpace();
+        parkingSlotAllocationSystem.allocateSpace();
+        ParkingSlotAllocationSystem parkingSlotAllocationSystemspy = Mockito.spy(parkingSlotAllocationSystem);
+        parkingSlotAllocationSystemspy.deallocateSpace();
+        verify(parkingSlotAllocationSystemspy,times(1)).notifyLotObserversThatSlotHasSpaceAgain();
+
     }
 
     @Test

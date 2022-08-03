@@ -8,7 +8,7 @@ public class Owner implements ParkingLotObserver{
         if(eventType == "Full"){
             showFullSignBoard();
         } else if (eventType == "NotFull") {
-            System.out.println("Hey, Parking Lot has space again !!");
+            System.out.println("Hey, Parking Lot has space again !!Remove Full Sign Board");
         }
     }
 }

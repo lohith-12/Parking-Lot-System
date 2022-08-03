@@ -26,10 +26,17 @@ public class ParkingSlotAllocationSystem {
             message = Messages.SLOT_IS_ALLOCATED_SUCCESSFULLY;
         }
         else {
-            notificationManager.notify("Full");
+            notifyLotObserversThatSlotIsFull();
             message = Messages.ALL_SLOTS_ARE_OCCUPIED;
         }
         return message;
+    }
+    public void notifyLotObserversThatSlotIsFull(){
+        notificationManager.notify("Full");
+    }
+    public void notifyLotObserversThatSlotHasSpaceAgain(){
+        notificationManager.notify("NotFull");
+
     }
 
     public String deallocateSpace(){
@@ -41,7 +48,7 @@ public class ParkingSlotAllocationSystem {
             availableSpace++;
             if(availableSpace == 1)
             {
-                notificationManager.notify("NotFull");
+                notifyLotObserversThatSlotHasSpaceAgain();
             }
             message = Messages.SLOT_REMOVED_SUCCESSFULLY;
         }
