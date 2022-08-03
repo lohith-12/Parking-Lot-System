@@ -22,14 +22,10 @@ public class AttendantTest {
     }
 
     @Test
-    public void unpark() {
-        boolean val = attendant.park();
-
+    public void ShouldBeAbleToUnpark() {
+        attendant.park();
         boolean actualValue = attendant.unpark();
-
         assertTrue(actualValue);
-
-
 
     }
 }
