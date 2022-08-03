@@ -4,13 +4,16 @@ import java.util.List;
 
 public class ParkingSlotAllocationSystem {
     private final Integer TOTAL_SPACE = 2;
-    private Integer availableSpace;
+    public Integer availableSpace;
     private NotificationManager notificationManager;
+
+    public int maxSpace;
     ArrayList<ParkingLotObserver> parkingLotObserverListForEventTypeFull = new ArrayList<ParkingLotObserver>(Arrays.asList(new Owner(), new SecurityPersonal()));
     ArrayList<ParkingLotObserver> parkingLotObserverListForEventTypeNotFull = new ArrayList<ParkingLotObserver>(Arrays.asList(new Owner()));
 
 
     public ParkingSlotAllocationSystem(Integer availableSpace) {
+        maxSpace=availableSpace;
         this.availableSpace = availableSpace;
         this.notificationManager = new NotificationManager("Full", "NotFull");
         subscribeAllParkingLotObserver();
@@ -30,6 +33,9 @@ public class ParkingSlotAllocationSystem {
             message = Messages.ALL_SLOTS_ARE_OCCUPIED;
         }
         return message;
+    }
+    public boolean isSpaceAvailable(){
+        return availableSpace > 0?true:false;
     }
     public void notifyLotObserversThatSlotIsFull(){
         notificationManager.notify("Full");

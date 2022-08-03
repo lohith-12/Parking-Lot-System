@@ -4,10 +4,8 @@ import java.util.Scanner;
 
 public class ParkingLot {
     public static void main(String[] args){
-        Integer capacity = 2;
-        Owner owner = new Owner();
-        SecurityPersonal securityPersonal = new SecurityPersonal();
-        ParkingSlotAllocationSystem parkingSlotAllocationSystem = new ParkingSlotAllocationSystem(capacity);
+
+        Attendant attendant = new Attendant();
 
         int choice;
         do {
@@ -21,15 +19,15 @@ public class ParkingLot {
             Scanner sc = new Scanner(System.in);
             choice = sc.nextInt();
 
-            String successMessage="";
+            boolean successMessage;
             switch (choice) {
                 case 1:
-                    successMessage = parkingSlotAllocationSystem.allocateSpace();
+                    successMessage = attendant.Park();
                     System.out.println(successMessage);
                     System.out.println();
                     break;
                 case 2:
-                    successMessage =  parkingSlotAllocationSystem.deallocateSpace();
+                    successMessage = attendant.Unpark();
                     System.out.println(successMessage);
                     System.out.println();
                     break;
