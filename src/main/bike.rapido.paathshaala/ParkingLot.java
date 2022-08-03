@@ -1,11 +1,12 @@
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class ParkingLot {
     public static void main(String[] args){
+        Integer capacity = 2;
 
-        Attendant attendant = new Attendant();
+        ParkingSlotAllocationSystem [] Lots= new ParkingSlotAllocationSystem[2];
+
+        Attendant attendant = new Attendant(capacity,Lots);
 
         int choice;
         do {
@@ -22,12 +23,12 @@ public class ParkingLot {
             boolean successMessage;
             switch (choice) {
                 case 1:
-                    successMessage = attendant.Park();
+                    successMessage = attendant.park();
                     System.out.println(successMessage);
                     System.out.println();
                     break;
                 case 2:
-                    successMessage = attendant.Unpark();
+                    successMessage = attendant.unpark();
                     System.out.println(successMessage);
                     System.out.println();
                     break;

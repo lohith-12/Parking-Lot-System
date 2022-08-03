@@ -1,26 +1,25 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-
 public class Attendant {
 
-    Integer capacity = 2;
+    Integer capacity ;
 
-    ParkingSlotAllocationSystem [] Lots= new ParkingSlotAllocationSystem[2];
+    ParkingSlotAllocationSystem [] Lots;
 
-
-
+    public Attendant(Integer capacity, ParkingSlotAllocationSystem[] lots) {
+        this.capacity = capacity;
+        Lots = lots;
+        init();
+    }
 
     public int getAvailableLot(){
 
-        for(int i=0;i<2;i++){
+        for(int i=0;i<this.capacity;i++){
             if(this.Lots[i].isSpaceAvailable() == true)
                 return i;
         }
         return -1;
     }
 
-    public boolean Park(){
+    public boolean park(){
         int index= this.getAvailableLot();
         if(index!=-1){
             Lots[index].allocateSpace();
@@ -30,8 +29,8 @@ public class Attendant {
           return false;
         }
     }
-    public boolean Unpark(){
-        for(int i=0;i<2;i++){
+    public boolean unpark(){
+        for(int i=0;i<this.capacity;i++){
             if(this.Lots[i].availableSpace < this.Lots[i].maxSpace)
             {
                 Lots[i].deallocateSpace();
@@ -42,23 +41,12 @@ public class Attendant {
 
     }
 
-    public void Init()
+    public void init()
     {
-        for(int i=0;i<2;i++){
+        for(int i=0;i<this.capacity;i++){
             this.Lots[i]=new ParkingSlotAllocationSystem(capacity);
         }
     }
-
-     public  void main(String[] args) {
-        Attendant attendant= new Attendant();
-
-
-
-
-
-    }
-
-  //  Lots[0]= false // we will mark it false when it will become full
 
 
 
