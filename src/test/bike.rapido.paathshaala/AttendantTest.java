@@ -23,21 +23,22 @@ public class AttendantTest {
     public void shouldParkWhenThereIsASlotAvailable() {
         Car car =new Car();
 
-        int parkingLotNumber =  attendant.park(car);
+        ParkFunctionReturnType parkFunctionReturnType =  attendant.park(car);
+        assertTrue(parkFunctionReturnType.getIsParked());
 
-        assertThat(parkingLotNumber,is(0));
     }
     @Test
-    public void shouldReturnInvalidParkingNumberWhenParkingAlreadyParkedCar() {
+    public void shouldNotParkIfCarIsAlreadyParked() {
         Car car =new Car();
         attendant.park(car);
-        int parkingLotNumber =  attendant.park(car);
 
-        assertThat(parkingLotNumber,is(-1));
+        ParkFunctionReturnType parkFunctionReturnType =  attendant.park(car);
+
+        assertFalse(parkFunctionReturnType.getIsParked());
     }
 
     @Test
-    public void shouldBeAbleToUnParkAParkedCar() {
+    public void shouldUnParkIfCarIsParked() {
         Car car =new Car();
         attendant.park(car);
 
@@ -60,8 +61,10 @@ public class AttendantTest {
         Car car3 =new Car();
         attendant.park(car1);
         attendant.park(car2);
-        int parkingLotNumber = attendant.park(car3);
-        assertThat(parkingLotNumber,is(CONSTANTS.INVALID_PARKING_NUMBER));
+
+        ParkFunctionReturnType parkFunctionReturnType = attendant.park(car3);
+
+        assertFalse(parkFunctionReturnType.getIsParked());
     }
     @Test
     public void shouldNotifyObserversThatFirstLotIsFull() {
@@ -90,5 +93,7 @@ public class AttendantTest {
         attendantSpy.park(car2);
         Mockito.verify(attendantSpy).notifyLotObserversThatSlotIsFull(1);
     }
+
+
 
 }

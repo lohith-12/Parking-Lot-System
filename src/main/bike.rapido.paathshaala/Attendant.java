@@ -26,7 +26,7 @@ public class Attendant {
 
 
 
-    public int park(Car car){
+    public ParkFunctionReturnType park(Car car){
         int lotId =-1;
         for(int index=0;index<numberOfLots;index++){
             if(parkingLotAllocationSystem.allocateSlotForCar(Lots[index],car)){
@@ -34,11 +34,11 @@ public class Attendant {
                 if(checkToNotifyWhetherLotIsFullOrNot(Lots[index])){
                     notifyLotObserversThatSlotIsFull(Lots[index].getId());
                 }
-                 return  lotId;
+                 return  new ParkFunctionReturnType(true,lotId);
 
             }
         }
-        return CONSTANTS.INVALID_PARKING_NUMBER;
+        return new ParkFunctionReturnType(false,-1);
     }
 
 

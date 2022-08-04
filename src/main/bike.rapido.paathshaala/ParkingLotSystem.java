@@ -25,9 +25,9 @@ public class ParkingLotSystem {
             switch (choice) {
                 case 1:
                     //car = new Car();
-                    int index = attendant.park(car);
-                    System.out.println(CONSTANTS.SLOT_IS_ALLOCATED_SUCCESSFULLY+index);
-                    System.out.println();
+                    ParkFunctionReturnType index = attendant.park(car);
+//                    System.out.println(CONSTANTS.SLOT_IS_ALLOCATED_SUCCESSFULLY+index);
+//                    System.out.println();
                     break;
                 case 2:
                     //car = new Car();
