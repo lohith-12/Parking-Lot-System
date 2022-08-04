@@ -1,13 +1,10 @@
 public class SecurityPersonal implements ParkingLotObserver{
 
-    public void redirectMySecurityStaff() {
-        System.out.println("SecurityPersonal Alert : REDIRECTING MY SECURITY STAFF");
-    }
 
     @Override
-    public void notifyAccordingToEvent(String eventType) {
+    public void notifyAccordingToEvent(String eventType,int lotId) {
         if(eventType == "Full"){
-            redirectMySecurityStaff();
+            System.out.println("Secutity Personal Alert : Parking Lot " + lotId + " is full");
         }
     }
 }

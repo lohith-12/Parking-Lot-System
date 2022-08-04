@@ -18,10 +18,10 @@ public class NotificationManager {
         }
     }
 
-    public void notify(String eventType){
+    public void notify(String eventType,int lotId){
         List<ParkingLotObserver> lotObserverList = parkingLotObservers.get(eventType);
         for(ParkingLotObserver lotObserver:lotObserverList){
-            lotObserver.notifyAccordingToEvent(eventType);
+            lotObserver.notifyAccordingToEvent(eventType,lotId);
         }
     }
 }
