@@ -92,6 +92,21 @@ public class AttendantTest {
         Mockito.verify(attendantSpy,Mockito.never()).notifyLotObserversThatSlotIsFull(1);
     }
     @Test
+    public void shouldNotifyObserversThatFirstLotHasFreeSpaceAgain() {
+        Attendant attendantSpy = Mockito.spy(new Attendant(2,2));
+        Car car1 =new Car();
+        Car car2 =new Car();
+        Car car3 =new Car();
+
+        attendantSpy.park(car1);
+        attendantSpy.park(car2);
+        attendantSpy.park(car3);
+        attendantSpy.unPark(car1);
+
+        Mockito.verify(attendantSpy).notifyLotObserversThatSlotHasSpaceAgain(0);
+
+    }
+    @Test
     public void shouldBeAbleNotifyObserversThatFirstAndSecondLotsAreFull() {
         Attendant attendantSpy = Mockito.spy(new Attendant(1,2));
         InOrder inOrder = inOrder(attendantSpy);

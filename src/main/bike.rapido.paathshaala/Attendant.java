@@ -1,19 +1,9 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-
 public class Attendant {
-
     Integer capacity ;
-
     Integer numberOfLots;
-
     ParkingLot[] ParkingLots;
-
     ParkingLotAllocationSystem parkingLotAllocationSystem;
     private NotificationManager notificationManager;
-    ArrayList<ParkingLotObserver> parkingLotObserverListForEventTypeFull = new ArrayList<>(Arrays.asList(new Owner(), new SecurityPersonal()));
-    ArrayList<ParkingLotObserver> parkingLotObserverListForEventTypeNotFull = new ArrayList<>(Arrays.asList(new Owner()));
-
     public Attendant(Integer capacity,int numberOfLots ) {
         this.capacity = capacity;
         this.numberOfLots=numberOfLots;
@@ -21,11 +11,7 @@ public class Attendant {
         initializeParkingLot();
         parkingLotAllocationSystem = new ParkingLotAllocationSystem();
         notificationManager = new NotificationManager("Full", "NotFull");
-        subscribeAllParkingLotObserver();
     }
-
-
-
     public ParkFunctionReturnType park(Car car){
         int lotId;
         int parkingLotNumber = getParkingLotNumber();
@@ -39,7 +25,6 @@ public class Attendant {
         }
         return new ParkFunctionReturnType(false,-1);
     }
-
     private int getParkingLotNumber() {
         int minimumAllocatedParkingLot = -1;
         int minimumNumberOfSlots =capacity+1;
@@ -51,13 +36,6 @@ public class Attendant {
         }
         return minimumAllocatedParkingLot;
     }
-
-
-    public void subscribeAllParkingLotObserver(){
-        notificationManager.subscribe("Full", parkingLotObserverListForEventTypeFull);
-        notificationManager.subscribe("NotFull", parkingLotObserverListForEventTypeNotFull);
-    }
-
     public boolean unPark(Car car){
         for(int index=0;index<numberOfLots;index++){
             if(parkingLotAllocationSystem.deallocateSpace(ParkingLots[index],car)){
@@ -69,7 +47,6 @@ public class Attendant {
         }
         return false;
     }
-
     public void initializeParkingLot()
     {
         for(int i=0;i<this.numberOfLots;i++){
@@ -90,5 +67,4 @@ public class Attendant {
     private boolean checkToNotifyWhetherLotIsFreeAgainOrNot(ParkingLot parkingLot) {
         return parkingLot.getAllocatedSlots()==parkingLot.getTotalCapacity()-1;
     }
-
 }
