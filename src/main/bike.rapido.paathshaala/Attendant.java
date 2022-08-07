@@ -7,17 +7,17 @@ public class Attendant {
 
     Integer numberOfLots;
 
-    ParkingLot[] Lots ;
+    ParkingLot[] ParkingLots;
 
     ParkingLotAllocationSystem parkingLotAllocationSystem;
     private NotificationManager notificationManager;
-    ArrayList<ParkingLotObserver> parkingLotObserverListForEventTypeFull = new ArrayList<ParkingLotObserver>(Arrays.asList(new Owner(), new SecurityPersonal()));
-    ArrayList<ParkingLotObserver> parkingLotObserverListForEventTypeNotFull = new ArrayList<ParkingLotObserver>(Arrays.asList(new Owner()));
+    ArrayList<ParkingLotObserver> parkingLotObserverListForEventTypeFull = new ArrayList<>(Arrays.asList(new Owner(), new SecurityPersonal()));
+    ArrayList<ParkingLotObserver> parkingLotObserverListForEventTypeNotFull = new ArrayList<>(Arrays.asList(new Owner()));
 
     public Attendant(Integer capacity,int numberOfLots ) {
         this.capacity = capacity;
         this.numberOfLots=numberOfLots;
-        Lots = new ParkingLot[numberOfLots];
+        ParkingLots = new ParkingLot[numberOfLots];
         initializeParkingLot();
         parkingLotAllocationSystem = new ParkingLotAllocationSystem();
         notificationManager = new NotificationManager("Full", "NotFull");
@@ -27,44 +27,53 @@ public class Attendant {
 
 
     public ParkFunctionReturnType park(Car car){
-        int lotId =-1;
-        for(int index=0;index<numberOfLots;index++){
-            if(parkingLotAllocationSystem.allocateSlotForCar(Lots[index],car)){
-                 lotId=index;
-                if(checkToNotifyWhetherLotIsFullOrNot(Lots[index])){
-                    notifyLotObserversThatSlotIsFull(Lots[index].getId());
-                }
-                 return  new ParkFunctionReturnType(true,lotId);
-
+        int lotId;
+        int parkingLotNumber = getParkingLotNumber();
+        if(parkingLotAllocationSystem.allocateSlotForCar(ParkingLots[parkingLotNumber],car)){
+            lotId=parkingLotNumber;
+            if(checkToNotifyWhetherLotIsFullOrNot(ParkingLots[parkingLotNumber])){
+                notifyLotObserversThatSlotIsFull(ParkingLots[parkingLotNumber].getId());
             }
+            return  new ParkFunctionReturnType(true,lotId);
+
         }
         return new ParkFunctionReturnType(false,-1);
     }
 
+    private int getParkingLotNumber() {
+        int minimumAllocatedParkingLot = -1;
+        int minimumNumberOfSlots =capacity+1;
+        for(int index=0;index<numberOfLots;index++){
+            if(ParkingLots[index].getAllocatedSlots()<minimumNumberOfSlots){
+                minimumNumberOfSlots = ParkingLots[index].getAllocatedSlots();
+                minimumAllocatedParkingLot = index;
+            }
+        }
+        return minimumAllocatedParkingLot;
+    }
 
-public void subscribeAllParkingLotObserver(){
-    notificationManager.subscribe("Full", parkingLotObserverListForEventTypeFull);
-    notificationManager.subscribe("NotFull", parkingLotObserverListForEventTypeNotFull);
-}
+
+    public void subscribeAllParkingLotObserver(){
+        notificationManager.subscribe("Full", parkingLotObserverListForEventTypeFull);
+        notificationManager.subscribe("NotFull", parkingLotObserverListForEventTypeNotFull);
+    }
 
     public boolean unPark(Car car){
         for(int index=0;index<numberOfLots;index++){
-            if(parkingLotAllocationSystem.deallocateSpace(Lots[index],car)){
-                if(checkToNotifyWhetherLotIsFreeAgainOrNot(Lots[index])){
-                    notifyLotObserversThatSlotIsFull(Lots[index].getId());
+            if(parkingLotAllocationSystem.deallocateSpace(ParkingLots[index],car)){
+                if(checkToNotifyWhetherLotIsFreeAgainOrNot(ParkingLots[index])){
+                    notifyLotObserversThatSlotHasSpaceAgain(ParkingLots[index].getId());
                     return true;
                 }
-                return  true;
             }
         }
         return false;
-
     }
 
     public void initializeParkingLot()
     {
         for(int i=0;i<this.numberOfLots;i++){
-            Lots[i]=new ParkingLot(capacity,i);
+            ParkingLots[i]=new ParkingLot(capacity,i);
         }
     }
     public void notifyLotObserversThatSlotIsFull(int lotId){

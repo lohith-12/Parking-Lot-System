@@ -1,10 +1,10 @@
 public class ParkFunctionReturnType {
     private boolean isParked=false;
-    private int lotnumber=-1;
+    private int lotNumber =-1;
 
-    public  ParkFunctionReturnType(boolean isParked,int lotnumber){
+    public  ParkFunctionReturnType(boolean isParked,int lotNumber){
         this.isParked=isParked;
-        this.lotnumber=lotnumber;
+        this.lotNumber = lotNumber;
     }
 
     public boolean getIsParked() {
@@ -12,7 +12,9 @@ public class ParkFunctionReturnType {
     }
 
 
-    public int getLotnumber() {
-        return lotnumber;
+    public int getLotNumber() {
+        return lotNumber;
     }
+
+
 }

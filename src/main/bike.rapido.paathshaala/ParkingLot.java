@@ -24,7 +24,11 @@ public class ParkingLot {
         return true;
     }
     public boolean removeCar(Car car){
+        if(!parkedCarList.contains(car)){
+            return false;
+        }
         parkedCarList.remove(car);
+        car.setParkedStatusFalse();
         allocatedSlots =allocatedSlots-1;
         return true;
     }
