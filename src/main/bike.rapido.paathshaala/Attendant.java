@@ -1,46 +1,40 @@
 public class Attendant {
     Integer capacity ;
     Integer numberOfLots;
-    ParkingLot[] ParkingLots;
+    ParkingLot[] parkingLots;
     ParkingLotAllocationSystem parkingLotAllocationSystem;
     private NotificationManager notificationManager;
+    private ParkingStrategy parkingStrategy;
+
     public Attendant(Integer capacity,int numberOfLots ) {
         this.capacity = capacity;
         this.numberOfLots=numberOfLots;
-        ParkingLots = new ParkingLot[numberOfLots];
+        parkingLots = new ParkingLot[numberOfLots];
         initializeParkingLot();
         parkingLotAllocationSystem = new ParkingLotAllocationSystem();
         notificationManager = new NotificationManager("Full", "NotFull");
     }
-    public ParkFunctionReturnType park(Car car){
-        int lotId;
-        int parkingLotNumber = getParkingLotNumber();
-        if(parkingLotAllocationSystem.allocateSlotForCar(ParkingLots[parkingLotNumber],car)){
-            lotId=parkingLotNumber;
-            if(checkToNotifyWhetherLotIsFullOrNot(ParkingLots[parkingLotNumber])){
-                notifyLotObserversThatSlotIsFull(ParkingLots[parkingLotNumber].getId());
-            }
-            return  new ParkFunctionReturnType(true,lotId);
 
-        }
-        return new ParkFunctionReturnType(false,-1);
-    }
-    private int getParkingLotNumber() {
-        int minimumAllocatedParkingLot = -1;
-        int minimumNumberOfSlots =capacity+1;
-        for(int index=0;index<numberOfLots;index++){
-            if(ParkingLots[index].getAllocatedSlots()<minimumNumberOfSlots){
-                minimumNumberOfSlots = ParkingLots[index].getAllocatedSlots();
-                minimumAllocatedParkingLot = index;
+    public ParkingLot park(Car car){
+        ParkingLot parkingLot = parkingStrategy.getParkingLot(parkingLots);
+        if (parkingLot!=null) {
+            if (parkingLotAllocationSystem.allocateSlotForCar(parkingLot, car)) {
+                if (checkToNotifyWhetherLotIsFullOrNot(parkingLot)) {
+                    notifyLotObserversThatSlotIsFull(parkingLot.getId());
+                }
+                return parkingLot;
+
             }
         }
-        return minimumAllocatedParkingLot;
+
+        return null;
     }
+
     public boolean unPark(Car car){
         for(int index=0;index<numberOfLots;index++){
-            if(parkingLotAllocationSystem.deallocateSpace(ParkingLots[index],car)){
-                if(checkToNotifyWhetherLotIsFreeAgainOrNot(ParkingLots[index])){
-                    notifyLotObserversThatSlotHasSpaceAgain(ParkingLots[index].getId());
+            if(parkingLotAllocationSystem.deallocateSpace(parkingLots[index],car)){
+                if(checkToNotifyWhetherLotIsFreeAgainOrNot(parkingLots[index])){
+                    notifyLotObserversThatSlotHasSpaceAgain(parkingLots[index].getId());
                     return true;
                 }
             }
@@ -50,7 +44,7 @@ public class Attendant {
     public void initializeParkingLot()
     {
         for(int i=0;i<this.numberOfLots;i++){
-            ParkingLots[i]=new ParkingLot(capacity,i);
+            parkingLots[i]=new ParkingLot(capacity,i);
         }
     }
     public void notifyLotObserversThatSlotIsFull(int lotId){
@@ -66,5 +60,10 @@ public class Attendant {
     }
     private boolean checkToNotifyWhetherLotIsFreeAgainOrNot(ParkingLot parkingLot) {
         return parkingLot.getAllocatedSlots()==parkingLot.getTotalCapacity()-1;
+    }
+
+    public void setStrategy(ParkingStrategy parkingStrategy)
+    {
+        this.parkingStrategy= parkingStrategy;
     }
 }

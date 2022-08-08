@@ -2,8 +2,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.times;
 
@@ -16,16 +16,16 @@ public class AttendantTest {
         capacity = 1;
         numberOfLots =2;
         attendant = new Attendant(capacity, numberOfLots);
-
+        attendant.setStrategy(new FirstFreeAvailable());
     }
 
     @Test
     public void shouldParkWhenThereIsASlotAvailable() {
         Car car =new Car();
 
-        ParkFunctionReturnType parkFunctionReturnType =  attendant.park(car);
+        ParkingLot parkingLot =  attendant.park(car);
 
-        assertTrue(parkFunctionReturnType.getIsParked());
+        assertNotNull(parkingLot);
 
     }
     @Test
@@ -33,9 +33,9 @@ public class AttendantTest {
         Car car =new Car();
         attendant.park(car);
 
-        ParkFunctionReturnType parkFunctionReturnType =  attendant.park(car);
+        ParkingLot parkingLot =  attendant.park(car);
 
-        assertFalse(parkFunctionReturnType.getIsParked());
+        assertNull(parkingLot);
     }
 
     @Test
@@ -63,13 +63,14 @@ public class AttendantTest {
         attendant.park(car1);
         attendant.park(car2);
 
-        ParkFunctionReturnType parkFunctionReturnType = attendant.park(car3);
+        ParkingLot parkingLot = attendant.park(car3);
 
-        assertFalse(parkFunctionReturnType.getIsParked());
+        assertNull(parkingLot);
     }
     @Test
     public void shouldNotifyObserversThatFirstLotIsFull() {
         Attendant attendantSpy = Mockito.spy(new Attendant(1,2));
+        attendantSpy.setStrategy(new FirstFreeAvailable());
         Car car1 =new Car();
 
         attendantSpy.park(car1);
@@ -80,6 +81,7 @@ public class AttendantTest {
     @Test
     public void shouldNotNotifyObserversThatSecondLotIsNotFull() {
         Attendant attendantSpy = Mockito.spy(new Attendant(2,2));
+        attendantSpy.setStrategy(new FirstFreeAvailable());
         Car car1 = new Car();
         Car car2 = new Car();
         Car car3 = new Car();
@@ -94,6 +96,7 @@ public class AttendantTest {
     @Test
     public void shouldNotifyObserversThatFirstLotHasFreeSpaceAgain() {
         Attendant attendantSpy = Mockito.spy(new Attendant(2,2));
+        attendantSpy.setStrategy(new FirstFreeAvailable());
         Car car1 =new Car();
         Car car2 =new Car();
         Car car3 =new Car();
@@ -109,6 +112,7 @@ public class AttendantTest {
     @Test
     public void shouldBeAbleNotifyObserversThatFirstAndSecondLotsAreFull() {
         Attendant attendantSpy = Mockito.spy(new Attendant(1,2));
+        attendantSpy.setStrategy(new FirstFreeAvailable());
         InOrder inOrder = inOrder(attendantSpy);
         Car car1 =new Car();
         Car car2 = new Car();
@@ -119,5 +123,6 @@ public class AttendantTest {
         inOrder.verify(attendantSpy).notifyLotObserversThatSlotIsFull(0);
         inOrder.verify(attendantSpy).notifyLotObserversThatSlotIsFull(1);
     }
+
 
 }

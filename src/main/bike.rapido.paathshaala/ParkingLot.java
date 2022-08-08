@@ -16,7 +16,7 @@ public class ParkingLot {
         this.id = i;
     }
     public boolean checkForAvailabilityOfSlots(){
-        return allocatedSlots<totalCapacity;
+        return this.allocatedSlots<this.totalCapacity;
     }
     public boolean addCar(Car car){
         parkedCarList.add(car);

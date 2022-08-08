@@ -1,6 +1,5 @@
 public class Owner implements ParkingLotObserver{
 
-
     @Override
     public void notifyAccordingToEvent(String eventType,int lotId) {
         if(eventType == "Full"){
