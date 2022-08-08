@@ -1,5 +1,8 @@
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Optional;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
@@ -19,13 +22,13 @@ public class ParkingLotsEqualDistributionTest {
         Car car2 = new Car();
         Car car3 = new Car();
 
-        ParkingLot parkingLotNumberForCar1 = attendant.park(car1);
-        ParkingLot parkingLotNumberForCar2 = attendant.park(car2);
-        ParkingLot parkingLotNumberForCar3 = attendant.park(car3);
+        Optional<ParkingLot> parkingLotNumberForCar1 = attendant.park(car1);
+        Optional<ParkingLot> parkingLotNumberForCar2 = attendant.park(car2);
+        Optional<ParkingLot> parkingLotNumberForCar3 = attendant.park(car3);
 
-        assertEquals(0, parkingLotNumberForCar1.getId());
-        assertEquals(1, parkingLotNumberForCar2.getId());
-        assertEquals(2, parkingLotNumberForCar3.getId());
+        assertEquals(0, parkingLotNumberForCar1.get().getId());
+        assertEquals(1, parkingLotNumberForCar2.get().getId());
+        assertEquals(2, parkingLotNumberForCar3.get().getId());
 
     }
 
@@ -40,9 +43,9 @@ public class ParkingLotsEqualDistributionTest {
         attendant.park(car2);
         attendant.park(car3);
         attendant.unPark(car2);
-        ParkingLot parkingLotNumberForCar4 = attendant.park(car4);
+        Optional<ParkingLot> parkingLotNumberForCar4 = attendant.park(car4);
 
-        assertEquals(1,parkingLotNumberForCar4.getId());
+        assertEquals(1,parkingLotNumberForCar4.get().getId());
 
 
     }
@@ -67,27 +70,12 @@ public class ParkingLotsEqualDistributionTest {
         attendant.unPark(car3);
         attendant.unPark(car6);
 
-        ParkingLot parkingLotNumberForCar7 = attendant.park(car7);
-        ParkingLot parkingLotNumberForCar8 = attendant.park(car8);
-        assertEquals(2,parkingLotNumberForCar7.getId());
-        assertEquals(2,parkingLotNumberForCar8.getId());
+        Optional<ParkingLot> parkingLotNumberForCar7 = attendant.park(car7);
+        Optional<ParkingLot> parkingLotNumberForCar8 = attendant.park(car8);
+        assertEquals(2,parkingLotNumberForCar7.get().getId());
+        assertEquals(2,parkingLotNumberForCar8.get().getId());
 
     }
 
-    @Test
-    public void shouldParkCarWhenFirstFreeSlotAvailableUntilFilledUp() {
-        attendant.setStrategy(new FirstFreeAvailable());
-        Car car1 = new Car();
-        Car car2 = new Car();
-        Car car3 = new Car();
 
-        ParkingLot parkingLotNumberForCar1 = attendant.park(car1);
-        ParkingLot parkingLotNumberForCar2 = attendant.park(car2);
-        ParkingLot parkingLotNumberForCar3 = attendant.park(car3);
-
-        assertEquals(0,parkingLotNumberForCar1.getId());
-        assertEquals(0,parkingLotNumberForCar2.getId());
-        assertEquals(0,parkingLotNumberForCar3.getId());
-
-    }
 }

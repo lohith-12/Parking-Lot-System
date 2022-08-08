@@ -1,3 +1,5 @@
+import java.util.Optional;
+
 public class Attendant {
     Integer capacity ;
     Integer numberOfLots;
@@ -15,19 +17,19 @@ public class Attendant {
         notificationManager = new NotificationManager("Full", "NotFull");
     }
 
-    public ParkingLot park(Car car){
+    public Optional<ParkingLot> park(Car car){
         ParkingLot parkingLot = parkingStrategy.getParkingLot(parkingLots);
         if (parkingLot!=null) {
             if (parkingLotAllocationSystem.allocateSlotForCar(parkingLot, car)) {
                 if (checkToNotifyWhetherLotIsFullOrNot(parkingLot)) {
                     notifyLotObserversThatSlotIsFull(parkingLot.getId());
                 }
-                return parkingLot;
+                return Optional.of(parkingLot);
 
             }
         }
 
-        return null;
+        return Optional.empty();
     }
 
     public boolean unPark(Car car){

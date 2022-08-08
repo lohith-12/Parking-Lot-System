@@ -3,6 +3,8 @@ import org.junit.Test;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
 
+import java.util.Optional;
+
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.times;
@@ -23,7 +25,7 @@ public class AttendantTest {
     public void shouldParkWhenThereIsASlotAvailable() {
         Car car =new Car();
 
-        ParkingLot parkingLot =  attendant.park(car);
+        Optional<ParkingLot> parkingLot =  attendant.park(car);
 
         assertNotNull(parkingLot);
 
@@ -33,9 +35,8 @@ public class AttendantTest {
         Car car =new Car();
         attendant.park(car);
 
-        ParkingLot parkingLot =  attendant.park(car);
-
-        assertNull(parkingLot);
+        Optional<ParkingLot> parkingLot =  attendant.park(car);
+        assertFalse(parkingLot.isPresent());
     }
 
     @Test
@@ -63,9 +64,9 @@ public class AttendantTest {
         attendant.park(car1);
         attendant.park(car2);
 
-        ParkingLot parkingLot = attendant.park(car3);
+        Optional<ParkingLot> parkingLot = attendant.park(car3);
 
-        assertNull(parkingLot);
+        assertFalse(parkingLot.isPresent());
     }
     @Test
     public void shouldNotifyObserversThatFirstLotIsFull() {
