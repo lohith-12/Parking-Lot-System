@@ -46,6 +46,5 @@ public class FirstFreeAvailableTest {
         assertEquals(0,parkingLotNumberForCar4.get().getId());
 
 
-
     }
 }
